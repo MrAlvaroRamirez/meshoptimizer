@@ -1044,6 +1044,8 @@ Settings defaults()
 	settings.texture_quality = 8;
 	settings.texture_scale = 1.f;
 
+	settings.use_uint8_joints = true;
+
 	return settings;
 }
 

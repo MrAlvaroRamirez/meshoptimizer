@@ -130,6 +130,8 @@ struct Settings
 	bool fallback;
 
 	int verbose;
+
+	bool use_uint8_joints;
 };
 
 struct QuantizationPosition

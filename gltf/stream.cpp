@@ -564,7 +564,7 @@ StreamFormat writeVertexStream(std::string& bin, const Stream& stream, const Qua
 
 		assert(maxj <= 65535);
 
-		if (maxj <= 255)
+		if (settings.use_uint8_joints && maxj <= 255)
 		{
 			for (size_t i = 0; i < stream.data.size(); ++i)
 			{
