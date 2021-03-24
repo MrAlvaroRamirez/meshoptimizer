@@ -14,6 +14,7 @@ project(meshoptimizer VERSION 0.15 LANGUAGES CXX)
 option(MESHOPT_BUILD_DEMO "Build demo" OFF)
 option(MESHOPT_BUILD_GLTFPACK "Build gltfpack" OFF)
 option(MESHOPT_BUILD_SHARED_LIBS "Build shared libraries" OFF)
+option(MESHOPT_BUILD_GLTFPACK_LIBS "Build gltfpack as libraries" ON)
 
 set(SOURCES
     src/meshoptimizer.h
@@ -84,6 +85,7 @@ if(MESHOPT_BUILD_DEMO)
 endif()
 
 if(MESHOPT_BUILD_GLTFPACK)
+    target_compile_definitions(meshoptimizer PUBLIC "MESHOPT_BUILD_GLTFPACK_MAIN")
     add_executable(gltfpack ${GLTF_SOURCES} tools/meshloader.cpp)
     target_link_libraries(gltfpack meshoptimizer)
     list(APPEND TARGETS gltfpack)
@@ -92,6 +94,12 @@ if(MESHOPT_BUILD_GLTFPACK)
         string(CONCAT RPATH "$ORIGIN/../" ${CMAKE_INSTALL_LIBDIR})
         set_target_properties(gltfpack PROPERTIES INSTALL_RPATH ${RPATH})
     endif()
+endif()
+
+if(MESHOPT_BUILD_GLTFPACK_LIBS)
+    add_library(gltfpack STATIC ${GLTF_SOURCES} tools/meshloader.cpp)
+    target_link_libraries(gltfpack meshoptimizer)
+    list(APPEND TARGETS gltfpack)
 endif()
 
 include(GNUInstallDirs)

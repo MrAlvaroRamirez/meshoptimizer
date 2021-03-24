@@ -1027,6 +1027,7 @@ int gltfpack(const char* input, const char* output, const char* report, Settings
 	return 0;
 }
 
+#ifdef MESHOPT_BUILD_GLTFPACK_MAIN
 Settings defaults()
 {
 	Settings settings = {};
@@ -1328,3 +1329,5 @@ extern "C" int pack(int argc, char** argv)
 	return result;
 }
 #endif
+
+#endif // MESHOPT_BUILD_GLTFPACK_MAIN
