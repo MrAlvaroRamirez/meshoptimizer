@@ -7,6 +7,9 @@
  * This application is distributed under the MIT License. See notice at the end of this file.
  */
 
+#ifndef GLTFPACK_H_INCLUDED__
+#define GLTFPACK_H_INCLUDED__
+
 #ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #endif
@@ -15,6 +18,8 @@
 #define CGLTF_VRM_v0_0
 #endif
 #include "../extern/cgltf.h"
+
+#include "gltfpackapi.h"
 
 #include <assert.h>
 
@@ -85,53 +90,6 @@ struct Animation
 	int frames;
 
 	std::vector<Track> tracks;
-};
-
-struct Settings
-{
-	int pos_bits;
-	int tex_bits;
-	int nrm_bits;
-	int col_bits;
-
-	int trn_bits;
-	int rot_bits;
-	int scl_bits;
-
-	int anim_freq;
-	bool anim_const;
-
-	bool keep_nodes;
-	bool keep_materials;
-	bool keep_extras;
-
-	bool mesh_merge;
-	bool mesh_instancing;
-
-	float simplify_threshold;
-	bool simplify_aggressive;
-	float simplify_debug;
-
-	int meshlet_debug;
-
-	bool texture_ktx2;
-	bool texture_uastc;
-	bool texture_embed;
-	bool texture_toktx;
-
-	int texture_quality;
-	float texture_scale;
-	bool texture_pow2;
-
-	bool quantize;
-
-	bool compress;
-	bool compressmore;
-	bool fallback;
-
-	int verbose;
-
-	bool use_uint8_joints;
 };
 
 struct QuantizationPosition
@@ -331,6 +289,8 @@ void writeArray(std::string& json, const char* name, const std::string& contents
 void writeExtensions(std::string& json, const ExtensionInfo* extensions, size_t count);
 void writeExtras(std::string& json, const std::string& data, const cgltf_extras& extras);
 void writeScene(std::string& json, const cgltf_scene& scene, const std::string& roots);
+
+#endif // GLTFPACK_H_INCLUDED__
 
 /**
  * Copyright (c) 2016-2020 Arseny Kapoulkine
