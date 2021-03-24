@@ -3,6 +3,8 @@
 #endif
 
 #define CGLTF_IMPLEMENTATION
+#define CGLTF_VRM_v0_0
+#define CGLTF_VRM_v0_0_IMPLEMENTATION
 #include "../extern/cgltf.h"
 
 #define FAST_OBJ_IMPLEMENTATION

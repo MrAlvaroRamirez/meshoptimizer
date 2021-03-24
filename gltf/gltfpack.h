@@ -11,6 +11,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
+#ifndef CGLTF_VRM_v0_0
+#define CGLTF_VRM_v0_0
+#endif
 #include "../extern/cgltf.h"
 
 #include <assert.h>
