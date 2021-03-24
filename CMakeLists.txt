@@ -51,21 +51,6 @@ set(GLTF_SOURCES
     gltf/write.cpp
 )
 
-set(GLTF_SOURCES_STATIC
-    gltf/animation.cpp
-    gltf/basistoktx.cpp
-    gltf/fileio.cpp
-    gltf/image.cpp
-    gltf/json.cpp
-    gltf/material.cpp
-    gltf/mesh.cpp
-    gltf/node.cpp
-    gltf/parseobj.cpp
-    gltf/parsegltf.cpp
-    gltf/stream.cpp
-    gltf/write.cpp
-)
-
 if(MSVC)
     add_compile_options(/W4 /WX)
 else()
@@ -112,7 +97,7 @@ if(MESHOPT_BUILD_GLTFPACK)
 endif()
 
 if(MESHOPT_BUILD_GLTFPACK_LIBS)
-    add_library(gltfpack STATIC ${GLTF_SOURCES_STATIC})
+    add_library(gltfpack STATIC ${GLTF_SOURCES})
     target_link_libraries(gltfpack meshoptimizer)
     list(APPEND TARGETS gltfpack)
 endif()
