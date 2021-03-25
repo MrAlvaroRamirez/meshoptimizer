@@ -230,6 +230,24 @@ static void renormalizeWeights(uint8_t (&w)[4])
 	w[max] += uint8_t(255 - sum);
 }
 
+static void renormalizeWeights_floats(float (&w)[4])
+{
+	float sum = w[0] + w[1] + w[2] + w[3];
+
+	if (sum == 1.f)
+		return;
+
+	// we assume that the total error is limited to 0.5/component = 2
+	// this means that it's acceptable to adjust the max. component to compensate for the error
+	int max = 0;
+
+	for (int k = 1; k < 4; ++k)
+		if (w[k] > w[max])
+			max = k;
+
+	w[max] += float(1.f - sum);
+}
+
 static void encodeOct(int& fu, int& fv, float nx, float ny, float nz, int bits)
 {
 	float nl = fabsf(nx) + fabsf(ny) + fabsf(nz);
@@ -533,27 +551,47 @@ StreamFormat writeVertexStream(std::string& bin, const Stream& stream, const Qua
 	}
 	else if (stream.type == cgltf_attribute_type_weights)
 	{
-		for (size_t i = 0; i < stream.data.size(); ++i)
-		{
-			const Attr& a = stream.data[i];
+		if (settings.use_uint8_weights) {
+			for (size_t i = 0; i < stream.data.size(); ++i)
+			{
+				const Attr& a = stream.data[i];
 
-			float ws = a.f[0] + a.f[1] + a.f[2] + a.f[3];
-			float wsi = (ws == 0.f) ? 0.f : 1.f / ws;
+				float ws = a.f[0] + a.f[1] + a.f[2] + a.f[3];
+				float wsi = (ws == 0.f) ? 0.f : 1.f / ws;
 
-			uint8_t v[4] = {
-			    uint8_t(meshopt_quantizeUnorm(a.f[0] * wsi, 8)),
-			    uint8_t(meshopt_quantizeUnorm(a.f[1] * wsi, 8)),
-			    uint8_t(meshopt_quantizeUnorm(a.f[2] * wsi, 8)),
-			    uint8_t(meshopt_quantizeUnorm(a.f[3] * wsi, 8))};
+				uint8_t v[4] = {
+				    uint8_t(meshopt_quantizeUnorm(a.f[0] * wsi, 8)),
+				    uint8_t(meshopt_quantizeUnorm(a.f[1] * wsi, 8)),
+				    uint8_t(meshopt_quantizeUnorm(a.f[2] * wsi, 8)),
+				    uint8_t(meshopt_quantizeUnorm(a.f[3] * wsi, 8))};
 
-			if (wsi != 0.f)
-				renormalizeWeights(v);
+				if (wsi != 0.f)
+					renormalizeWeights(v);
 
-			bin.append(reinterpret_cast<const char*>(v), sizeof(v));
+				bin.append(reinterpret_cast<const char*>(v), sizeof(v));
+			}
+
+			StreamFormat format = {cgltf_type_vec4, cgltf_component_type_r_8u, true, 4};
+			return format;
+		} else {
+			for (size_t i = 0; i < stream.data.size(); ++i)
+			{
+				const Attr& a = stream.data[i];
+
+				float ws = a.f[0] + a.f[1] + a.f[2] + a.f[3];
+				float wsi = (ws == 0.f) ? 0.f : 1.f / ws;
+
+				float v[4] = {a.f[0], a.f[1], a.f[2], a.f[3]};
+
+				if (wsi != 0.f)
+					renormalizeWeights_floats(v);
+
+				bin.append(reinterpret_cast<const char*>(v), sizeof(v));
+			}
+
+			StreamFormat format = {cgltf_type_vec4, cgltf_component_type_r_32f, false, 16};
+			return format;
 		}
-
-		StreamFormat format = {cgltf_type_vec4, cgltf_component_type_r_8u, true, 4};
-		return format;
 	}
 	else if (stream.type == cgltf_attribute_type_joints)
 	{

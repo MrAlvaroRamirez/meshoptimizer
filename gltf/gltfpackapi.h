@@ -55,6 +55,7 @@ struct Settings
 	int verbose;
 
 	bool use_uint8_joints;
+	bool use_uint8_weights;
 };
 
 int gltfpack(const char* input, const char* output, const char* report, Settings settings);

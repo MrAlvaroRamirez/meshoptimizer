@@ -1045,6 +1045,7 @@ Settings defaults()
 	settings.texture_scale = 1.f;
 
 	settings.use_uint8_joints = true;
+	settings.use_uint8_weights = true;
 
 	return settings;
 }
