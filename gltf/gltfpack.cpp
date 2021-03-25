@@ -863,7 +863,7 @@ int gltfpack(const char* input, const char* output, const char* report, Settings
 	std::string iext = getExtension(input);
 	std::string oext = output ? getExtension(output) : "";
 
-	if (iext == ".gltf" || iext == ".glb")
+	if (iext == ".gltf" || iext == ".glb" || iext == ".vrm")
 	{
 		const char* error = 0;
 		data = parseGltf(input, meshes, animations, extras, &error);
@@ -910,7 +910,7 @@ int gltfpack(const char* input, const char* output, const char* report, Settings
 		}
 	}
 
-	if (oext == ".glb")
+	if (oext == ".glb" || oext == ".vrm")
 	{
 		settings.texture_embed = true;
 	}
@@ -968,7 +968,7 @@ int gltfpack(const char* input, const char* output, const char* report, Settings
 			return 4;
 		}
 	}
-	else if (oext == ".glb")
+	else if (oext == ".glb" || oext == ".vrm")
 	{
 		std::string fbpath = output;
 		fbpath.replace(fbpath.size() - 4, 4, ".fallback.bin");
@@ -1331,5 +1331,10 @@ extern "C" int pack(int argc, char** argv)
 	return result;
 }
 #endif
+
+#else // MESHOPT_BUILD_GLTFPACK_MAIN
+
+#define FAST_OBJ_IMPLEMENTATION
+#include "../extern/fast_obj.h"
 
 #endif // MESHOPT_BUILD_GLTFPACK_MAIN
