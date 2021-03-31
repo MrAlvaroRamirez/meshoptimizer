@@ -1197,6 +1197,14 @@ int main(int argc, char** argv)
 			settings.compress = true;
 			settings.fallback = true;
 		}
+		else if (strcmp(arg, "-jf") == 0)
+		{
+			settings.use_uint8_joints = false;
+		}
+		else if (strcmp(arg, "-wf") == 0)
+		{
+			settings.use_uint8_weights = false;
+		}
 		else if (strcmp(arg, "-v") == 0)
 		{
 			settings.verbose = 1;
@@ -1286,6 +1294,9 @@ int main(int argc, char** argv)
 			fprintf(stderr, "\t-ke: keep extras data\n");
 			fprintf(stderr, "\t-mm: merge instances of the same mesh together when possible\n");
 			fprintf(stderr, "\t-mi: use EXT_mesh_gpu_instancing when serializing multiple mesh instances\n");
+			fprintf(stderr, "\nVRM:\n");
+			fprintf(stderr, "\t-jf: use floats for joint buffer. Required for VRM spec 0.0 (Before UniVRM 0.68)\n");
+			fprintf(stderr, "\t-wf: use floats for weight buffer. Required for VRM spec 0.0 (Before UniVRM 0.70)\n");
 			fprintf(stderr, "\nMiscellaneous:\n");
 			fprintf(stderr, "\t-cf: produce compressed gltf/glb files with fallback for loaders that don't support compression\n");
 			fprintf(stderr, "\t-noq: disable quantization; produces much larger glTF files with no extensions\n");
