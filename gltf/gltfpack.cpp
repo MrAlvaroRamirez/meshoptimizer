@@ -14,6 +14,9 @@
 
 #include "../src/meshoptimizer.h"
 
+#include "../extern/cgltf_write_stub.h"
+#include "../extern/vrm/vrm_write.v0_0.inl"
+
 std::string getVersion()
 {
 	char result[32];
@@ -710,6 +713,43 @@ static void process(cgltf_data* data, const char* input_path, const char* output
 		append(json_extensions, "]}");
 	}
 
+	if (data->has_vrm_v0_0)
+	{
+		comma(json_extensions);
+		append(json_extensions, "\"VRM\":");
+
+		cgltf_write_context ctx;
+		ctx.buffer = nullptr;
+		ctx.buffer_size = 0;
+		ctx.remaining = 0;
+		ctx.cursor = nullptr;
+		ctx.chars_written = 0;
+		ctx.data = data;
+		ctx.depth = 1;
+		ctx.indent = "  ";
+		ctx.needs_comma = 0;
+		ctx.extension_flags = 0;
+		ctx.required_extension_flags = 0;
+
+		cgltf_write_vrm_v0_0(&ctx, &data->vrm_v0_0);
+
+		cgltf_size chars_required = 1 + ctx.chars_written;
+		ctx.buffer = (char*)calloc(chars_required, sizeof(char));
+		ctx.cursor = ctx.buffer;
+		ctx.buffer_size = chars_required;
+		ctx.remaining = chars_required;
+		ctx.chars_written = 0;
+		ctx.needs_comma = 0;
+		ctx.extension_flags = 0;
+		ctx.required_extension_flags = 0;
+
+		cgltf_write_vrm_v0_0(&ctx, &data->vrm_v0_0);
+
+		append(json_extensions, ctx.buffer);
+
+		free(ctx.buffer);
+	}
+
 	append(json, "\"asset\":{");
 	append(json, "\"version\":\"2.0\",\"generator\":\"gltfpack ");
 	append(json, getVersion());
@@ -733,6 +773,7 @@ static void process(cgltf_data* data, const char* input_path, const char* output
 	    {"KHR_lights_punctual", data->lights_count > 0, false},
 	    {"KHR_texture_basisu", !json_textures.empty() && settings.texture_ktx2, true},
 	    {"EXT_mesh_gpu_instancing", ext_instancing, true},
+	    {"VRM", (bool)data->has_vrm_v0_0, (bool)data->has_vrm_v0_0},
 	};
 
 	writeExtensions(json, extensions, sizeof(extensions) / sizeof(extensions[0]));
