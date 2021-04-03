@@ -773,7 +773,7 @@ static void process(cgltf_data* data, const char* input_path, const char* output
 	    {"KHR_lights_punctual", data->lights_count > 0, false},
 	    {"KHR_texture_basisu", !json_textures.empty() && settings.texture_ktx2, true},
 	    {"EXT_mesh_gpu_instancing", ext_instancing, true},
-	    {"VRM", (bool)data->has_vrm_v0_0, (bool)data->has_vrm_v0_0},
+	    {"VRM", (bool)data->has_vrm_v0_0, false},
 	};
 
 	writeExtensions(json, extensions, sizeof(extensions) / sizeof(extensions[0]));
