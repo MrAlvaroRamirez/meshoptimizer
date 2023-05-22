@@ -1,8 +1,0 @@
-/mnt/c/Users/Alvaro/Union/meshoptimizer/CMakeFiles/meshoptimizer.dir
-/mnt/c/Users/Alvaro/Union/meshoptimizer/CMakeFiles/gltfpack.dir
-/mnt/c/Users/Alvaro/Union/meshoptimizer/CMakeFiles/edit_cache.dir
-/mnt/c/Users/Alvaro/Union/meshoptimizer/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/Alvaro/Union/meshoptimizer/CMakeFiles/list_install_components.dir
-/mnt/c/Users/Alvaro/Union/meshoptimizer/CMakeFiles/install.dir
-/mnt/c/Users/Alvaro/Union/meshoptimizer/CMakeFiles/install/local.dir
-/mnt/c/Users/Alvaro/Union/meshoptimizer/CMakeFiles/install/strip.dir
