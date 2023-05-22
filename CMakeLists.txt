@@ -16,6 +16,8 @@ option(MESHOPT_BUILD_GLTFPACK "Build gltfpack" OFF)
 option(MESHOPT_BUILD_SHARED_LIBS "Build shared libraries" OFF)
 option(MESHOPT_BUILD_GLTFPACK_LIBS "Build gltfpack as libraries" ON)
 
+set(CMAKE_CXX_STANDARD 11)
+
 set(SOURCES
     src/meshoptimizer.h
     src/allocator.cpp
